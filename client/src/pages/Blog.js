@@ -18,7 +18,7 @@ const Blog = () => {
     // Fetch blog posts from the backend
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/blogs');
+        const response = await axios.get('https://fyndah-backend.onrender.com/api/blogs');
         setBlogs(response.data);
       } catch (error) {
         console.error('Error fetching blogs:', error);
@@ -35,7 +35,7 @@ const Blog = () => {
   // Delete blog post
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/blogs/${id}`, {
+      await axios.delete(`https://fyndah-backend.onrender.com/api/blogs/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       // Remove the deleted blog from state
@@ -54,7 +54,7 @@ const Blog = () => {
   // Handle edit form submission
   const handleEditSubmit = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/blogs/${editBlog._id}`, editBlog, {
+      const response = await axios.put(`https://fyndah-backend.onrender.com/api/blogs/${editBlog._id}`, editBlog, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       // Update the blog in the state

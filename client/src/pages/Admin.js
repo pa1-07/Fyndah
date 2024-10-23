@@ -37,7 +37,7 @@ const AdminPanel = () => {
 
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/blogs");
+        const response = await axios.get("https://fyndah-backend.onrender.com/api/blogs");
         setBlogs(response.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -54,7 +54,7 @@ const AdminPanel = () => {
       if (editingBlogId) {
         // Edit existing blog post
         await axios.put(
-          `http://localhost:5000/api/blogs/${editingBlogId}`,
+          `https://fyndah-backend.onrender.com/api/blogs/${editingBlogId}`,
           newBlog,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -71,7 +71,7 @@ const AdminPanel = () => {
       } else {
         // Add new blog post
         const response = await axios.post(
-          "http://localhost:5000/api/blogs",
+          "https://fyndah-backend.onrender.com/api/blogs",
           newBlog,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -91,7 +91,7 @@ const AdminPanel = () => {
   const deleteBlogPost = async (id) => {
     try {
       console.log("Deleting blog post with ID:", id); // Log the ID for debugging
-      await axios.delete(`http://localhost:5000/api/blogs/${id}`, {
+      await axios.delete(`https://fyndah-backend.onrender.com/api/blogs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBlogs(blogs.filter((blog) => blog._id !== id));
