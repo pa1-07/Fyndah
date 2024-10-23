@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 8080;
 
 connectDb()
 
-app.use(cors());
+app.use(cors(
+    {
+        origin: ['https://fyndah.onrender.com','http://localhost:3000']  // Replace with your front-end's domain
+      }
+));
 app.use(express.json());
 
 // Use blog routes
