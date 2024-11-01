@@ -12,9 +12,9 @@ const Footer = () => {
         className="footerNav"
         style={{ top: "auto", bottom: 0, backgroundColor: "#f0f0f0" }}  // Correct style prop
       >
-        <Toolbar>
+        <Toolbar style={{ minHeight: "50px", padding: "0 16px" }}>
           <Typography variant="body2" color="black" >
-            © 2024 Fyndah
+            © 2024 FyndahBlog
           </Typography>
         </Toolbar>
       </AppBar>

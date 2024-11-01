@@ -10,6 +10,7 @@ import {
   CardContent,
   CardActions,
   CardHeader,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +22,7 @@ const AdminPanel = () => {
   const [editingBlogId, setEditingBlogId] = useState(null); // For editing mode
   const [viewMoreId, setViewMoreId] = useState(null); // For tracking which blog post is expanded
   const [token] = useState(localStorage.getItem("token") || ""); // Use token from localStorage
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
 
   // Logout function
@@ -37,10 +39,13 @@ const AdminPanel = () => {
 
     const fetchBlogs = async () => {
       try {
+        setLoading(true); // Start loading
         const response = await axios.get("https://fyndah-backend.onrender.com/api/blogs");
         setBlogs(response.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
     fetchBlogs();
@@ -208,61 +213,68 @@ const AdminPanel = () => {
             Existing Blog Posts
           </Typography>
 
-          <Box
-            sx={{
-              maxHeight: "300px",
-              overflowY: "auto",
-              borderRadius: 2,
-              boxShadow: 1,
-              p: 2,
-              backgroundColor: "#fff",
-            }}
-          >
-            {blogs.length > 0 ? (
-              blogs.map((blog) => (
-                <Card key={blog._id} sx={{ mb: 2, boxShadow: 3 }}>
-                  <CardHeader
-                    title={blog.title}
-                    subheader={`By ${blog.author}`}
-                  />
-                  <CardContent>
-                    <Typography variant="body2" color="textSecondary">
-                      {viewMoreId === blog._id
-                        ? blog.content
-                        : `${blog.content.substring(0, 100)}...`}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      color="primary"
-                      onClick={() => handleViewMore(blog._id)}
-                    >
-                      {viewMoreId === blog._id ? "View Less" : "View More"}
-                    </Button>
-                    <Button
-                      size="small"
-                      color="secondary"
-                      onClick={() => editBlogPost(blog)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="small"
-                      color="error"
-                      onClick={() => deleteBlogPost(blog._id)}
-                    >
-                      Delete
-                    </Button>
-                  </CardActions>
-                </Card>
-              ))
-            ) : (
-              <Typography variant="body2" align="center">
-                No blog posts available
-              </Typography>
-            )}
-          </Box>
+          {/* Loading Spinner */}
+          {loading ? (
+            <Box display="flex" justifyContent="center" alignItems="center" mt={4}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                maxHeight: "300px",
+                overflowY: "auto",
+                borderRadius: 2,
+                boxShadow: 1,
+                p: 2,
+                backgroundColor: "#fff",
+              }}
+            >
+              {blogs.length > 0 ? (
+                blogs.map((blog) => (
+                  <Card key={blog._id} sx={{ mb: 2, boxShadow: 3 }}>
+                    <CardHeader
+                      title={blog.title}
+                      subheader={`By ${blog.author}`}
+                    />
+                    <CardContent>
+                      <Typography variant="body2" color="textSecondary">
+                        {viewMoreId === blog._id
+                          ? blog.content
+                          : `${blog.content.substring(0, 100)}...`}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        size="small"
+                        color="primary"
+                        onClick={() => handleViewMore(blog._id)}
+                      >
+                        {viewMoreId === blog._id ? "View Less" : "View More"}
+                      </Button>
+                      <Button
+                        size="small"
+                        color="secondary"
+                        onClick={() => editBlogPost(blog)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="small"
+                        color="error"
+                        onClick={() => deleteBlogPost(blog._id)}
+                      >
+                        Delete
+                      </Button>
+                    </CardActions>
+                  </Card>
+                ))
+              ) : (
+                <Typography variant="body2" align="center">
+                  No blog posts available
+                </Typography>
+              )}
+            </Box>
+          )}
         </Box>
       </Container>
     </Box>
